@@ -346,6 +346,21 @@ body {
 .dot.danger { background: #EF4444; }
 
 @media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.2rem;
+  }
+  .title-area h1 {
+    word-break: keep-all;
+  }
+  .title-area p {
+    flex-wrap: wrap;
+  }
+  .controls {
+    width: 100%;
+    justify-content: space-between;
+  }
   .calendar-grid {
     grid-template-columns: 1fr;
   }
