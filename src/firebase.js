@@ -1,18 +1,16 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
-// TODO: Firebase 콘솔(https://console.firebase.google.com/)에서 새 프로젝트 생성 후
-// 웹 앱을 추가하고 발급받은 구성(Config) 객체를 아래에 덮어쓰세요!
+// 사용자님이 발급받으신 진짜 Database 키!
 const firebaseConfig = {
-  apiKey: "API_KEY_HERE",
-  authDomain: "PROJECT_ID.firebaseapp.com",
-  projectId: "PROJECT_ID",
-  storageBucket: "PROJECT_ID.appspot.com",
-  messagingSenderId: "SENDER_ID",
-  appId: "APP_ID"
+  apiKey: "AIzaSyC3VUmXxVJlXfeS28Xf6LvR4xXwg9Tgpzs",
+  authDomain: "parking-b37bb.firebaseapp.com",
+  projectId: "parking-b37bb",
+  storageBucket: "parking-b37bb.firebasestorage.app",
+  messagingSenderId: "616347084946",
+  appId: "1:616347084946:web:fd700c9d65a3a50598de4b"
 };
 
-// Config가 입력되지 않았을 경우를 대비한 예외 처리 (로컬 데모용)
 const isConfigured = firebaseConfig.apiKey !== "API_KEY_HERE";
 
 let db = null;
