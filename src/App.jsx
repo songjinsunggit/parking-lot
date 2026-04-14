@@ -21,6 +21,7 @@ function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [savedName, setSavedName] = useState(() => localStorage.getItem('parking_userName') || '');
   const [nameInput, setNameInput] = useState('');
 
   // 날짜 계산 (월요일 시작)
@@ -42,19 +43,43 @@ function App() {
     // 과거 날짜는 막기 (옵션)
     if (isBefore(startOfDay(day), startOfDay(new Date()))) return;
     
-    setSelectedDate(day);
-    setModalOpen(true);
+    const dateStr = format(day, 'yyyy-MM-dd');
+
+    if (savedName) {
+      // 이미 저장된 이름이 있다면 바로 토글(추가/삭제)
+      const registrations = data[dateStr] || [];
+      if (registrations.includes(savedName)) {
+        removeName(dateStr, savedName);
+      } else {
+        addName(dateStr, savedName);
+      }
+    } else {
+      // 이름이 없으면 모달 열기
+      setSelectedDate(day);
+      setModalOpen(true);
+    }
   };
 
   const handleAddSubmit = (e) => {
     e.preventDefault();
-    if (!nameInput.trim() || !selectedDate) return;
+    const newName = nameInput.trim();
+    if (!newName || !selectedDate) return;
     
     const dateStr = format(selectedDate, 'yyyy-MM-dd');
-    addName(dateStr, nameInput.trim());
+    addName(dateStr, newName);
+    
+    // 로컬 스토리지에 이름 저장
+    localStorage.setItem('parking_userName', newName);
+    setSavedName(newName);
     
     setNameInput('');
     setModalOpen(false);
+  };
+
+  const handleClearName = () => {
+    localStorage.removeItem('parking_userName');
+    setSavedName('');
+    setNameInput('');
   };
 
   return (
@@ -71,6 +96,19 @@ function App() {
               </span>
             )}
           </p>
+          {savedName && (
+            <div style={{ marginTop: '0.75rem', fontSize: '0.9rem', color: '#4F46E5', display: 'flex', alignItems: 'center', background: '#EEF2FF', padding: '0.5rem', borderRadius: '6px' }}>
+              <User size={16} style={{ marginRight: '6px' }} />
+              <span><strong>{savedName}</strong>님, 날짜를 클릭하면 즉시 예약/취소됩니다.</span>
+              <button 
+                onClick={handleClearName} 
+                className="btn-secondary"
+                style={{ marginLeft: 'auto', padding: '4px 8px', fontSize: '0.8rem' }}
+              >
+                이름 변경
+              </button>
+            </div>
+          )}
         </div>
         
         <div className="controls">
